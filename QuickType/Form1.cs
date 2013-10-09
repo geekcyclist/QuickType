@@ -16,8 +16,10 @@ namespace QuickType
         Random _random = new Random();
         Stats _stats = new Stats();
         Words _words = new Words();
+
+        //used to hold the list of characters typed
         private string _stringBuffer = String.Empty;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -45,22 +47,20 @@ namespace QuickType
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            //NOT HERE EVEN THOUGH THE BOOK PUT CODE HERE!
+            //if the key is not 'enter' then add the character to the string buffer
             if (e.KeyCode != Keys.Enter)
             {
                 _stringBuffer += e.KeyCode;
             }
             else
             {
-                string temp = _stringBuffer.ToLower();
-                _stringBuffer = String.Empty;
-                //If the user pressed the right key, remove it and increase the speed (decrease interval)
-                //if (listBox1.Items.Contains(e.KeyCode))
-                if (listBox1.Items.Contains(temp))
+                string temp = _stringBuffer.ToLower(); //adjust for shift/capslock
+                _stringBuffer = String.Empty; //reset string buffer
+                if (listBox1.Items.Contains(temp)) // see if the string is in the list
                 {
-                    //listBox1.Items.Remove(e.KeyCode);
-                    listBox1.Items.Remove(temp);
-                    listBox1.Refresh();
+                    listBox1.Items.Remove(temp); //remove the word
+                    listBox1.Refresh(); //refresh the display
+                    //speed the game up
                     if (timer1.Interval > 400) timer1.Interval -= 10;
                     if (timer1.Interval > 250) timer1.Interval -= 7;
                     if (timer1.Interval > 100) timer1.Interval -= 5;
@@ -71,7 +71,7 @@ namespace QuickType
                 }
                 else
                 {
-                    //incorrect key
+                    //incorrect key : update stats : game speed stays the same
                     _stats.Update(false);
                 }
                 //update status labels
@@ -80,10 +80,10 @@ namespace QuickType
                 totalLabel.Text = "Total: " + _stats.Total;
                 accuracyLabel.Text = "Accuracy: " + _stats.Accuracy + "%";
             }
-
         }
 
-
+        // Refactored this to it's own function, rather than have the same line in the
+        //  form load and the timer_tick
         private void DisplayWord()
         {
             listBox1.Items.Add(_words.GetRandomWord());
