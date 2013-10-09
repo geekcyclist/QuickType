@@ -25,6 +25,7 @@ namespace QuickType
             InitializeComponent();
             //HFCSharp Book sets these properties in the form designer            
             this.KeyPreview = true;
+            this.Text += " Type the word displayed and press 'enter'"; 
             timer1.Interval = INITIAL_DELAY;
             difficultyProgressBar.Minimum = 0;
             difficultyProgressBar.Maximum = INITIAL_DELAY;
